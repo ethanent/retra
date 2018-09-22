@@ -1,0 +1,24 @@
+{
+  "name": "retra",
+  "version": "1.0.0",
+  "description": "The powerful, lightweight HTTP server library for Node",
+  "main": "model/RetraServer.js",
+  "scripts": {
+    "test": "node test.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ethanent/retra.git"
+  },
+  "keywords": [],
+  "author": "Ethan Davis (https://ethanent.me)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ethanent/retra/issues"
+  },
+  "homepage": "https://github.com/ethanent/retra",
+  "devDependencies": {
+    "centra": "^2.0.0",
+    "whew": "^1.1.3"
+  }
+}
