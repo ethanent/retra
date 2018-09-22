@@ -1,4 +1,5 @@
-# retra
+<p align="center" style="text-align: center;"><img src="https://github.com/ethanent/retra/blob/master/media/logo.png?raw=true" width="400"/></p>
+
 > The powerful, lightweight HTTP server library for Node
 
 [GitHub](https://www.npmjs.com/package/retra) | [NPM](https://www.npmjs.com/package/retra)
