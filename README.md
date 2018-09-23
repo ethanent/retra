@@ -8,13 +8,13 @@
 
 - [Install](#install)
 - [Usage](#usage)
-	- [Create a server](#create-a-server)
+	- [Create a new server](#create-a-server)
 	- [Simple GET handler](#add-a-simple-handler-for-get-requests)
-	- [Query string paramerers]('#read-query-string-data-from-requests')
+	- [Query string paramerers](#read-query-string-parameters-from-requests)
 	- [Parse request as JSON](#parse-request-as-json)
 	- [Set response headers](#set-response-headers)
 	- [Stream a response](#stream-a-response)
-	- [Make server listen](#make-your-server-listen-on-port-8080)
+	- [Listen as HTTP server](#make-your-server-listen-on-port-8080)
 	- [Listen as HTTPS server](#listen-as-an-https-server)
 - [Official extensions](#official-extensions)
 
@@ -46,7 +46,7 @@ app.add('GET', '/test', (req, res) => {
 })
 ```
 
-### Read query string data from requests
+### Read query string parameters from requests
 
 ```js
 app.add(/* ? ... ? */(req, res) => {
@@ -105,7 +105,7 @@ app.add('/squid', (req, res) => {
 })
 ```
 
-### Stream a reponse
+### Stream a response
 
 ```js
 // ... require fs, path
