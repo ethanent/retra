@@ -12,6 +12,10 @@ app.use((req, res, next) => {
 	else next()
 })
 
+app.add('GET', '/gimmeBuf', (req, res) => {
+	res.body(Buffer.from('hey')).end()
+})
+
 app.add('GET', '/gimmeQuery', (req, res) => {
 	res.body({
 		'name': req.query('name')
@@ -65,13 +69,19 @@ w.add('Parse request JSON body', async (result) => {
 w.add('Catchall path', async (result) => {
 	const res = await c('http://localhost:5138/catchallPath', 'DELETE').timeout(2000).send()
 
-	result(res.body.toString() === 'Catchall path!')
+	result((await res.text()) === 'Catchall path!')
 })
 
 w.add('Catchall method', async (result) => {
 	const res = await c('http://localhost:5138/somepath', 'POST').timeout(2000).send()
 
-	result(res.body.toString() === 'Catchall POST!')
+	result((await res.text()) === 'Catchall POST!')
+})
+
+w.add('Buffer responses through retra', async (result) => {
+	const res = await c('http://localhost:5138/gimmeBuf').timeout(2000).send()
+
+	result((await res.text()) === 'hey')
 })
 
 app.listen(5138, w.test)

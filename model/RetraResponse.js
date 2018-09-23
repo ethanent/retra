@@ -12,7 +12,7 @@ module.exports = class RetraResponse {
 	}
 
 	body (body) {
-		if (typeof body === 'object') {
+		if (typeof body === 'object' && !Buffer.isBuffer(body)) {
 			if (!this.headers['content-type']) this.headers['content-type'] = 'application/json'
 
 			this.data = JSON.stringify(body)
@@ -25,7 +25,7 @@ module.exports = class RetraResponse {
 	header (a1, a2) {
 		if (typeof a1 === 'object') {
 			Object.keys(a1).forEach((headerName) => {
-				this.headers[headerName.toLowerCase()] = a2
+				this.headers[headerName.toLowerCase()] = a1[headerName]
 			})
 		}
 		else {

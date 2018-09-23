@@ -1,6 +1,6 @@
 {
   "name": "retra",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "The powerful, lightweight HTTP server library for Node",
   "main": "model/RetraServer.js",
   "scripts": {
