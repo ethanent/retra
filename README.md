@@ -10,7 +10,7 @@
 - [Usage](#usage)
 	- [Create a new server](#create-a-server)
 	- [Simple GET handler](#add-a-simple-handler-for-get-requests)
-	- [Query string paramerers](#read-query-string-parameters-from-requests)
+	- [Query string parameters](#read-query-string-parameters-from-requests)
 	- [Parse request as JSON](#parse-request-as-json)
 	- [Set response headers](#set-response-headers)
 	- [Stream a response](#stream-a-response)
