@@ -4,6 +4,20 @@
 
 [GitHub](https://www.npmjs.com/package/retra) | [NPM](https://www.npmjs.com/package/retra)
 
+## Contents
+
+- [Install](#install)
+- [Usage](#usage)
+	- [Create a server](#create-a-server)
+	- [Simple GET handler](#add-a-simple-handler-for-get-requests)
+	- [Query string paramerers]('#read-query-string-data-from-requests')
+	- [Parse request as JSON](#parse-request-as-json)
+	- [Set response headers](#set-response-headers)
+	- [Stream a response](#stream-a-response)
+	- [Make server listen](#make-your-server-listen-on-port-8080)
+	- [Listen as HTTPS server](#listen-as-an-https-server)
+- [Official extensions](#official-extensions)
+
 ## Install
 
 ```shell
@@ -54,7 +68,17 @@ app.add(/* ? ... ? */ async (req, res) => {
 })
 ```
 
-### Set multiple headers at a time while responding
+### Set response headers
+
+Setting one header:
+
+```js
+app.add(/* ? ... ? */ (req, res) => {
+	res.header('content-type', 'squid').end()
+})
+```
+
+Setting many at once:
 
 ```js
 app.add(/* ? ... ? */ (req, res) => {
@@ -99,10 +123,34 @@ app.listen(8080, () => {
 })
 ```
 
-### Make an HTTPS server
+### Listen as an HTTPS server
 
 ```js
 // ... require https
 
 https.createServer(app.externalHandler).listen(443)
+```
+
+## Official extensions
+
+### retra-static
+> Host static files in your retra server, easily and efficiently.
+
+[GitHub](https://github.com/ethanent/retra-static) | [NPM](https://www.npmjs.com/package/retra-static)
+
+Install:
+
+```shell
+npm i retra-static
+```
+
+Use:
+
+```js
+// ... require path module
+const static = require('retra-static')
+
+app.use(static(path.join(__dirname, 'static')))
+
+// This will host from the /static directory!
 ```
