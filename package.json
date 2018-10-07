@@ -1,6 +1,6 @@
 {
   "name": "retra",
-  "version": "1.0.2",
+  "version": "1.1.0",
   "description": "The powerful, lightweight HTTP server library for Node",
   "main": "model/RetraServer.js",
   "scripts": {
@@ -18,7 +18,7 @@
   },
   "homepage": "https://github.com/ethanent/retra",
   "devDependencies": {
-    "centra": "^2.0.0",
+    "centra": "^2.1.0",
     "whew": "^1.1.3"
   }
 }

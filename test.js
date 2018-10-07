@@ -28,12 +28,26 @@ app.add('POST', '/parseJSON', async (req, res) => {
 	}).end()
 })
 
+app.add('GET', '/statusMessage', (req, res) => {
+	res.status(200, 'okie dokie').end()
+})
+
 app.add('POST', (req, res) => {
 	res.body('Catchall POST!').end()
 })
 
 app.add('/catchallPath', (req, res) => {
 	res.body('Catchall path!').end()
+})
+
+app.add('/compatibilityFeatures', (req, res) => {
+	res.writeHead(201, {
+		'test': 'hval'
+	})
+
+	res.end({
+		'hey': 'hi'
+	})
 })
 
 app.add((req, res) => {
@@ -88,6 +102,18 @@ w.add('Buffer responses through retra', async (result) => {
 	const res = await c('http://localhost:5138/gimmeBuf').timeout(2000).send()
 
 	result((await res.text()) === 'hey')
+})
+
+w.add('Status message', async (result) => {
+	const res = await c('http://localhost:5138/statusMessage').timeout(2000).send()
+
+	result(res.coreRes.statusMessage === 'okie dokie', 'Got status message: ' + res.coreRes.statusMessage)
+})
+
+w.add('Compatibility features', async (result) => {
+	const res = await c('http://localhost:5138/compatibilityFeatures').timeout(2000).send()
+
+	result((await res.json()).hey === 'hi' && res.headers['test'] === 'hval' && res.statusCode === 201)
 })
 
 app.listen(5138, w.test)

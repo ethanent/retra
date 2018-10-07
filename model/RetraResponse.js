@@ -1,12 +1,11 @@
 module.exports = class RetraResponse {
 	constructor (res) {
-		this.res = res
-
-		this.coreRes = this.res
+		this.coreRes = res
 
 		this.headers = {}
 
 		this.statusCode = 200
+		this.statusMessage = null
 
 		this.data = Buffer.alloc(0)
 	}
@@ -35,16 +34,28 @@ module.exports = class RetraResponse {
 		return this
 	}
 
-	status (code) {
+	status (code, message) {
 		this.statusCode = code
+		this.statusMessage = message
 
 		return this
 	}
 
-	end () {
-		this.res.writeHead(this.statusCode, this.headers)
+	writeHead (status, headers) {
+		if (status) this.status(status)
 
-		this.res.end(this.data)
+		if (headers) this.header(headers)
+	}
+
+	end (data) {
+		if (data) this.body(data)
+
+		if (this.statusMessage) {
+			this.coreRes.writeHead(this.statusCode, this.statusMessage, this.headers)
+		}
+		else this.coreRes.writeHead(this.statusCode, this.headers)
+
+		this.coreRes.end(this.data)
 
 		return this
 	}
