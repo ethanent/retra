@@ -78,6 +78,12 @@ w.add('Catchall method', async (result) => {
 	result((await res.text()) === 'Catchall POST!')
 })
 
+w.add('Catchall unspecific', async (result) => {
+	const res = await c('http://localhost:5138/thisshould404').timeout(2000).send()
+
+	result(res.statusCode === 404 && (await res.text()) === 'Error: Content not found!')
+})
+
 w.add('Buffer responses through retra', async (result) => {
 	const res = await c('http://localhost:5138/gimmeBuf').timeout(2000).send()
 
