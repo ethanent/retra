@@ -16,6 +16,7 @@
 	- [Stream a response](#stream-a-response)
 	- [Listen as HTTP server](#make-your-server-listen-on-port-8080)
 	- [Listen as HTTPS server](#listen-as-an-https-server)
+	- [Handle route errors](#handle-route-errors)
 - [Official extensions](#official-extensions)
 
 ## Install
@@ -129,6 +130,21 @@ app.listen(8080, () => {
 // ... require https
 
 https.createServer(app.externalHandler).listen(443)
+```
+
+### Handle route errors
+
+```js
+app.on('routeError', (err, req, res) => {
+	if (res.coreRes.finished === false) {
+		res.writeHead(500)
+		res.end({
+			'error': err.message
+		})
+	}
+
+	// This will respond with the error when one occurs!
+})
 ```
 
 ## Official extensions

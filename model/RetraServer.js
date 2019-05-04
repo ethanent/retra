@@ -1,6 +1,8 @@
 const http = require('http')
 const path = require('path')
 
+const EventEmitter = require('events')
+
 const RetraRequest = require(path.join(__dirname, 'RetraRequest.js'))
 const RetraResponse = require(path.join(__dirname, 'RetraResponse.js'))
 
@@ -8,8 +10,10 @@ const httpMethods = ['GET', 'HEAD', 'POST', 'PUT', 'DELETE', 'CONNECT', 'OPTIONS
 
 const isUrlTarget = (candidate) => (typeof candidate === 'string' && !httpMethods.includes(candidate)) || candidate instanceof RegExp
 
-module.exports = class RetraServer {
+module.exports = class RetraServer extends EventEmitter {
 	constructor () {
+		super()
+
 		this.internalServer = http.createServer((req, res) => this.handler.apply(this, [req, res]))
 
 		this.extensions = []
@@ -41,7 +45,6 @@ module.exports = class RetraServer {
 
 		req.on('end', () => {
 			const request = new RetraRequest(req, body)
-
 			const response = new RetraResponse(res)
 
 			const startRoutes = () => {
@@ -59,7 +62,21 @@ module.exports = class RetraServer {
 						else if (currentRoute.target.path !== request.parsedUrl.pathname) continue
 					}
 
-					currentRoute.handler(request, response)
+					let result = null;
+
+					try {
+						result = currentRoute.handler(request, response)
+
+						if (result instanceof Promise) {
+							result.then(() => {}).catch((err) => {
+								this.emit('routeError', err, request, response)
+							})
+						}
+					}
+					catch (err) {
+						this.emit('routeError', err, request, response)
+					}
+
 					break
 				}
 			}

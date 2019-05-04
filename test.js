@@ -50,6 +50,14 @@ app.add('/compatibilityFeatures', (req, res) => {
 	})
 })
 
+app.add('/errorThrow', (req, res) => {
+	throw new Error('AHHHH')
+})
+
+app.add('/asyncErrorThrow', async (req, res) => {
+	throw new Error('AHHHH')
+})
+
 app.add((req, res) => {
 	res.status(404).body('Error: Content not found!').end()
 })
@@ -114,6 +122,30 @@ w.add('Compatibility features', async (result) => {
 	const res = await c('http://localhost:5138/compatibilityFeatures').timeout(2000).send()
 
 	result((await res.json()).hey === 'hi' && res.headers['test'] === 'hval' && res.statusCode === 201)
+})
+
+w.add('Sync error throwing', async (result) => {
+	const res = await c('http://localhost:5138/errorThrow').timeout(2000).send()
+	const parsedRes = await res.json()
+
+	result(parsedRes.error === 'AHHHH' && parsedRes.path.includes('errorThrow') && res.statusCode === 500)
+})
+
+w.add('Async error throwing', async (result) => {
+	const res = await c('http://localhost:5138/asyncErrorThrow').timeout(2000).send()
+	const parsedRes = await res.json()
+
+	result(parsedRes.error === 'AHHHH' && parsedRes.path.includes('asyncErrorThrow') && res.statusCode === 500)
+})
+
+app.on('routeError', (err, req, res) => {
+	if (res.coreRes.finished === false) {
+		res.writeHead(500)
+		res.end({
+			'error': err.message,
+			'path': req.parsedUrl.path
+		})
+	}
 })
 
 app.listen(5138, w.test)
